@@ -1,47 +1,35 @@
 package com.example.lab_week_06
 
-import kotlin.getValue
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import android.widget.TextView
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.lab_week_06.model.CatModel
-import com.example.lab_week_06.model.CatBreed
-import com.example.lab_week_06.model.Gender
-private val FEMALE_SYMBOL = "\u2640"
-private val MALE_SYMBOL = "\u2642"
-private const val UNKNOWN_SYMBOL = "?"
 
-class CatViewHolder(containerView: View, private val imageLoader:
-ImageLoader) : RecyclerView.ViewHolder(containerView) {
-    //containerView is the container layout of each item list
-    //Here findViewById is used to get the reference of each views inside the container
-    private val catBiographyView: TextView by lazy {
-        containerView.findViewById(R.id.cat_biography) }
-    private val catBreedView: TextView by lazy {
-        containerView.findViewById(R.id.cat_breed) }
-    private val catGenderView: TextView by lazy {
-        containerView.findViewById(R.id.cat_gender) }
-    private val catNameView: TextView by lazy {
-        containerView.findViewById(R.id.cat_name) }
-    private val catPhotoView: ImageView by lazy {
-        containerView.findViewById(R.id.cat_photo) }
+class CatViewHolder(
+    itemView: View,
+    private val imageLoader: ImageLoader,
+    private val onClickListener: CatAdapter.OnClickListener
+) : RecyclerView.ViewHolder(itemView) {
 
-    //This function is called in the adapter to provide the binding function
+    // 1. Dapatkan referensi ke semua View dari layout item Anda
+    private val catNameView: TextView = itemView.findViewById(R.id.cat_name) // Ganti ID jika berbeda
+    private val catBreedView: TextView = itemView.findViewById(R.id.cat_breed) // Ganti ID jika berbeda
+    private val catPhotoView: ImageView = itemView.findViewById(R.id.cat_photo) // Ganti ID jika berbeda
+    // Tambahkan view lain jika ada (misal: gender, biografi)
+
     fun bindData(cat: CatModel) {
-        imageLoader.loadImage(cat.imageUrl, catPhotoView)
+        // 2. Set data teks ke TextViews
         catNameView.text = cat.name
-        catBreedView.text = when (cat.breed) {
-            CatBreed.AmericanCurl -> "American Curl"
-            CatBreed.BalineseJavanese -> "Balinese-Javanese"
-            CatBreed.ExoticShorthair -> "Exotic Shorthair"
-            else -> "Unknown"
-        }
-        catBiographyView.text = cat.biography
-        catGenderView.text = when (cat.gender) {
-            Gender.Female -> FEMALE_SYMBOL
-            Gender.Male -> MALE_SYMBOL
-            else -> UNKNOWN_SYMBOL
+        catBreedView.text = cat.breed.name
+        // set view lainnya...
+
+        // 3. (INI BAGIAN PENTING) Panggil imageLoader untuk memuat gambar
+        imageLoader.loadImage(cat.imageUrl, catPhotoView)
+
+        // 4. Atur OnClickListener untuk item
+        itemView.setOnClickListener {
+            onClickListener.onItemClick(cat)
         }
     }
 }
