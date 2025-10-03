@@ -7,6 +7,7 @@ class GlideImageLoader(private val context: Context) : ImageLoader{
     override fun loadImage(imageUrl: String, imageView: ImageView) {
         Glide.with(context)
             .load(imageUrl)
+            .placeholder(R.drawable.ic_launcher_background)
             .centerCrop()
             .into(imageView)
     }

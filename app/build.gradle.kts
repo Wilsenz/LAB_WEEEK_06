@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.material:material:1.10.0")
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
